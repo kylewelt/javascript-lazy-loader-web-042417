@@ -1,8 +1,8 @@
 'use strict'
 
 // this is the base API url
-const baseUrl = 'http://mimeocarlisting.azurewebsites.net/api/cars/'
-const resultsNumber = 3
+var baseUrl = 'http://mimeocarlisting.azurewebsites.net/api/cars/'
+var resultsNumber = 3
 var pageNumber = 3
 
 function formatCars (carsJSON) {
@@ -13,17 +13,16 @@ function formatCars (carsJSON) {
   var numCars = $('.car').length
 
   var row = carsJSON.map(function (car) {
-    return `<div class="col-md-4 car"><h2>${car['Make']}</h2><p><strong>Model:</strong> ${car['Model']}</p><p><strong>Year:</strong> ${car['Year']}</p></div>`
+    return '<div class="col-md-4 car"><h2>' + car['Make'] + '</h2><p><strong>Model:</strong> ' + car['Model'] + '</p><p><strong>Year:</strong> ' + car['Year'] + '</p></div>'
   }).join('')
 
-  return `<div class="row">${row}</div>`
+  return '<div class="row">' + row + '</div>'
 }
 
 function addCarsToDOM (carsJSON) {
   // this function should pass carsJSON to formatCars() and then
   // add the resulting HTML to the div with an id of "cars"
   $('#cars').append(formatCars(carsJSON))
-  pageNumber += 1
 }
 
 function fetchJSON () {
@@ -31,11 +30,12 @@ function fetchJSON () {
   // on success of the ajax call, it will pass the returned data
   // to addCarsToDOM()
   $.ajax({
-    url: `${baseUrl}/${pageNumber}/${resultsNumber}`,
+    url: baseUrl + '/' + pageNumber + '/' + resultsNumber,
     contentType: 'application/json',
     dataType: 'jsonp',
     success: function (data) {
       addCarsToDOM(data)
     }
   })
+  pageNumber += 1
 }
